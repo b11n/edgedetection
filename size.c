@@ -1,0 +1,126 @@
+#include<stdio.h>
+#include<math.h>
+int main()
+{
+    FILE *fp,*outf,*tf;
+
+    fp = fopen("clive_in.bmp","r+w");
+
+
+
+
+    fseek(fp,18,SEEK_SET);
+    int w1=fgetc(fp);
+    int w2=fgetc(fp);
+    int w=w2*256 + w1 ;
+    fseek(fp,22,SEEK_SET);
+    int h1=fgetc(fp);
+    int h2=fgetc(fp);
+	int h=h2*256+h1;
+    printf("Width :%d \nHeight :%d \n",w,h);
+
+
+    int A[1000][1000];
+
+    fseek(fp,54,SEEK_SET);
+
+
+
+    int l,sum,R,Gr,B,i,j,k=0;;
+    for(i=0;i<h;i++)
+        {
+
+            for(j=0;j<w;j++)
+            {
+                B=fgetc(fp);
+                Gr=fgetc(fp);
+                R=fgetc(fp);
+		A[i][j] = (B+Gr+R)/3;
+
+
+
+            }
+           
+            for(l=0;l<(w%4);l++)
+            fgetc(fp);
+        }
+printf("%d pixels read ",k);
+  fclose(fp);
+
+
+ 
+outf =fopen("clive_out.bmp","r+w");
+
+int G[1000][1000];
+
+int gx,gy,temp[2][2];
+
+for(i=0;i<h;i++)
+{
+	for(j=0;j<w;j++)
+		{
+			temp[0][0]=A[i][j];
+			temp[0][1]=A[i][j+1];
+			temp[1][0]=A[i+1][j];
+			temp[1][1]=A[i+1][j+1];
+			
+			if(i==h-1 && j==w-1)
+			{
+			temp[0][1]=0;
+			temp[1][0]=0;
+			temp[1][1]=0;
+
+			}
+
+			else if(i==h-1)
+			{
+			temp[1][0]=0;
+			temp[1][1]=0;	
+			}
+
+			else if(j==w-1)
+			{
+			temp[0][1]=0;
+			temp[1][1]=0;
+			}
+
+			gx=temp[1][1]-temp[0][0];
+			gy=temp[1][0]-temp[0][1];
+			G[i][j]=sqrt(gx*gx + gy*gy);
+			if(G[i][j]>50 && G[i][j]<75)
+			G[i][j]+=50;
+			if(G[i][j]>200)
+			G[i][j]-=50;
+			
+			G[i][j]=-(G[i][j]-255);
+		
+		}
+
+}
+
+
+fseek(outf,54,SEEK_SET);
+    for(i=0;i<h;i++)
+        {
+
+            for(j=0;j<w;j++)
+            {
+
+                fputc(G[i][j],outf);
+                fputc(G[i][j],outf);
+                fputc(G[i][j],outf);
+
+
+
+
+            }
+     	
+for(l=0;l<(w%4);l++)
+            fgetc(fp);
+        }
+    fclose(outf);
+
+
+
+    return 0;
+}
