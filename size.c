@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<math.h>
+#include<graphics.h>
 int main()
 {
     FILE *fp,*outf,*tf;
@@ -111,7 +112,28 @@ for(l=0;l<(w%4);l++)
             fgetc(fp);
         }
     fclose(outf);
+//GRAPHICS PART
 
+
+int gd=DETECT, gm=VGAMAX;
+
+
+initgraph(&gd,&gm, 0);
+setcolor(4);
+
+for(i=0;i<480;i++)
+{
+ for(j=0;j<640;j++)
+ {
+  if(G[i][j]<230)
+  
+	putpixel(i,j,WHITE);
+ }
+}
+
+scanf("%d",&i);
+closegraph();
+//GRAFX END
 
 
     return 0;
