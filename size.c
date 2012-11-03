@@ -4,7 +4,7 @@ int main()
 {
     FILE *fp,*outf,*tf;
 
-    fp = fopen("clive_in.bmp","r+w");
+    fp = fopen("in.bmp","r+w");
 
 
 
@@ -49,7 +49,7 @@ printf("%d pixels read ",k);
 
 
  
-outf =fopen("clive_out.bmp","r+w");
+outf =fopen("out.bmp","r+w");
 
 int G[1000][1000];
 
@@ -89,15 +89,12 @@ for(i=0;i<h;i++)
 			G[i][j]=sqrt(gx*gx + gy*gy);
 			if(G[i][j]>50 && G[i][j]<75)
 			G[i][j]+=50;
-			if(G[i][j]>200)
-			G[i][j]-=50;
-			
-			G[i][j]=-(G[i][j]-255);
-		
+			//if(G[i][j]>200)
+			//G[i][j]-=50;		
+			G[i][j]=-(G[i][j]-255);	
 		}
 
 }
-
 
 fseek(outf,54,SEEK_SET);
     for(i=0;i<h;i++)
@@ -105,14 +102,9 @@ fseek(outf,54,SEEK_SET);
 
             for(j=0;j<w;j++)
             {
-
                 fputc(G[i][j],outf);
                 fputc(G[i][j],outf);
                 fputc(G[i][j],outf);
-
-
-
-
             }
      	
 for(l=0;l<(w%4);l++)
